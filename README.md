@@ -12,7 +12,7 @@ Flask-backed web app with browser UI for quick HTTP/DNS/latency checks. Built as
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-flask --app app run
+python app.py      # auto-reloads via watchfiles
 # open http://localhost:5000
 ```
 For auto-reload during development you can use `watchfiles` (already in requirements):

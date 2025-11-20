@@ -12,18 +12,21 @@
   <body>
     <div id="app" class="app-shell">
       <header class="hero">
-        <h1>NjordIT for Field Engineers</h1>
+        <h1>NjordIT - All in One</h1>
         <p class="hero-sub">
           Quick HTTP, DNS, and latency checks with backend assistance. Install it, run checks from anywhere, and keep a log for tickets.
         </p>
         <div class="hero-actions">
-          <button id="runBtnHero" class="button">Run checks</button>
           <div id="statusBadge" class="status-badge"></div>
         </div>
         <div class="hero-metrics">
           <div class="metric-card">
-            <div class="metric-label">HTTP</div>
+            <div class="metric-label">IP Address</div>
             <div class="metric-value" id="httpResHero">—</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Local IP</div>
+            <div class="metric-value" id="localIpHero">—</div>
           </div>
           <div class="metric-card">
             <div class="metric-label">DNS</div>
@@ -36,59 +39,15 @@
         </div>
       </header>
 
-      <section class="section">
-        <div class="section-header">
-          <h2>Quick targets</h2>
-          <p>Set what to probe.  Works great on Chromebooks, kiosks, and phones.</p>
-        </div>
-        <div class="grid">
-          <div class="card">
-            <h3>Targets</h3>
-            <p>Configure endpoints for reachability checks.</p>
-            <label style="font-weight: 600">HTTP URL</label>
-            <input id="urlInput" class="input" value="https://example.com" />
-            <label style="font-weight: 600; margin-top: 10px">Domain</label>
-            <input id="domainInput" class="input" value="example.com" />
-            <div style="margin-top: 12px" class="row">
-              <button id="runBtn" class="button">Run checks</button>
-            </div>
+      <section class="section ip-config-section">
+        <div class="card ip-config-card" id="ipConfigCard">
+          <div class="ip-config-header">
+            <h3>IP Config</h3>
+            <button id="runIpConfigBtn" class="button ghost">Run</button>
           </div>
-
-          <div class="card">
-            <h3>Results</h3>
-            <p>Summary of last run.</p>
-            <p>HTTP: <strong id="httpRes">—</strong></p>
-            <p>DNS: <strong id="dnsRes">—</strong></p>
-            <p>Latency: <strong id="latencyRes">—</strong></p>
-          </div>
-
-          <div class="card">
-            <h3>Activity log</h3>
-            <p>Steps from the last run.</p>
-            <div id="logs" class="logs" aria-live="polite">
-              <div style="color: var(--muted)">No logs yet.</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-header">
-          <h2>Why this?</h2>
-          <p>Field-friendly, low friction, and works with your team’s ticket notes.</p>
-        </div>
-        <div class="grid features">
-          <div class="feature-card">
-            <h4>Backend assist</h4>
-            <p>Flask handles DNS/HTTP/latency so browsers aren’t blocked by CORS/ICMP limits.</p>
-          </div>
-          <div class="feature-card">
-            <h4>PWA ready</h4>
-            <p>Install on Chromebooks or phones; shell caches offline for quick use.</p>
-          </div>
-          <div class="feature-card">
-            <h4>Extendable</h4>
-            <p>Add port scans, traceroute, auth, or saved profiles with minimal changes.</p>
+          <p class="ip-config-hint" id="ipConfigHint">Click Run to expand and capture the current IP configuration.</p>
+          <div class="ip-config-body" id="ipConfigBody">
+            <pre id="ipConfigOutput" class="ip-config-output" aria-live="polite">Press Run to show interface details.</pre>
           </div>
         </div>
       </section>
