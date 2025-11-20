@@ -13,7 +13,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 python app.py      # auto-reloads via watchfiles
-# open http://localhost:5000
+# open http://localhost:51000
 ```
 For auto-reload during development you can use `watchfiles` (already in requirements):
 ```bash

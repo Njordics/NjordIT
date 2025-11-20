@@ -17,8 +17,11 @@ const logsEl = document.getElementById("logs");
 const statusBadgeEl = document.getElementById("statusBadge");
 const ipConfigCard = document.getElementById("ipConfigCard");
 const runIpConfigBtn = document.getElementById("runIpConfigBtn");
+const rerunIpConfigBtn = document.getElementById("rerunIpConfigBtn");
 const ipConfigHint = document.getElementById("ipConfigHint");
 const ipConfigOutput = document.getElementById("ipConfigOutput");
+const closeIpConfigBtn = document.getElementById("closeIpConfigBtn");
+const ipConfigButtons = [runIpConfigBtn, rerunIpConfigBtn].filter(Boolean);
 
 async function fetchPublicIp() {
   if (!httpResEl && !httpResHero) return;
@@ -66,13 +69,26 @@ async function fetchLocalIp() {
   }
 }
 
-async function runIpConfig() {
+function applyIpConfigButtonState(running, trigger) {
+  ipConfigButtons.forEach((btn) => {
+    btn.disabled = running;
+    if (!running) {
+      btn.textContent = btn === rerunIpConfigBtn ? "Rerun" : "Run";
+    }
+  });
+  if (running && trigger) {
+    trigger.textContent = trigger === rerunIpConfigBtn ? "Rerunning…" : "Running…";
+  }
+}
+
+async function runIpConfig(event) {
   if (!runIpConfigBtn) return;
+  const trigger = (event?.currentTarget || runIpConfigBtn);
   if (ipConfigCard) ipConfigCard.classList.add("expanded");
   if (ipConfigHint) ipConfigHint.classList.add("hidden");
   if (ipConfigOutput) ipConfigOutput.textContent = "Running IP configuration…";
-  runIpConfigBtn.disabled = true;
-  runIpConfigBtn.textContent = "Running…";
+  rerunIpConfigBtn?.classList.remove("hidden");
+  applyIpConfigButtonState(true, trigger);
 
   try {
     const resp = await fetch("/api/ipconfig");
@@ -85,9 +101,16 @@ async function runIpConfig() {
   } catch (err) {
     if (ipConfigOutput) ipConfigOutput.textContent = `Request failed: ${err.message}`;
   } finally {
-    runIpConfigBtn.disabled = false;
-    runIpConfigBtn.textContent = "Run";
+    applyIpConfigButtonState(false);
   }
+}
+
+function collapseIpConfig() {
+  if (ipConfigCard) ipConfigCard.classList.remove("expanded");
+  if (ipConfigOutput) ipConfigOutput.textContent = "Press Run to show interface details.";
+  if (ipConfigHint) ipConfigHint.classList.remove("hidden");
+  rerunIpConfigBtn?.classList.add("hidden");
+  applyIpConfigButtonState(false);
 }
 
 function logLine(text) {
@@ -189,6 +212,8 @@ async function runChecks() {
 if (runBtn) runBtn.addEventListener("click", runChecks);
 if (runBtnHero) runBtnHero.addEventListener("click", runChecks);
 if (runIpConfigBtn) runIpConfigBtn.addEventListener("click", runIpConfig);
+if (rerunIpConfigBtn) rerunIpConfigBtn.addEventListener("click", runIpConfig);
+if (closeIpConfigBtn) closeIpConfigBtn.addEventListener("click", collapseIpConfig);
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {

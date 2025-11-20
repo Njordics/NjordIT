@@ -43,7 +43,13 @@
         <div class="card ip-config-card" id="ipConfigCard">
           <div class="ip-config-header">
             <h3>IP Config</h3>
-            <button id="runIpConfigBtn" class="button ghost">Run</button>
+            <div class="ip-config-actions">
+              <div class="ip-config-primary-actions">
+                <button id="runIpConfigBtn" class="button ghost">Run</button>
+                <button id="rerunIpConfigBtn" class="button ghost hidden">Rerun</button>
+              </div>
+              <button id="closeIpConfigBtn" class="button ghost icon" aria-label="Collapse IP Config card">×</button>
+            </div>
           </div>
           <p class="ip-config-hint" id="ipConfigHint">Click Run to expand and capture the current IP configuration.</p>
           <div class="ip-config-body" id="ipConfigBody">

@@ -16,7 +16,7 @@ app = Flask(__name__, static_folder="static", template_folder="templates")
 
 def _run_server() -> None:
     """Start the Flask dev server (reloader handled by watchfiles when available)."""
-    app.run(debug=True, use_reloader=False, host="0.0.0.0", port=5000)
+    app.run(debug=True, use_reloader=False, host="0.0.0.0", port=51000)
 
 
 @dataclass

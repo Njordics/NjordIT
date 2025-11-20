@@ -234,6 +234,17 @@ a {
   gap: 12px;
 }
 
+.ip-config-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.ip-config-primary-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
 .ip-config-header h3 {
   margin: 0;
 }
@@ -277,6 +288,20 @@ a {
   background: rgba(3, 6, 12, 0.5);
   border: 1px solid rgba(60, 255, 124, 0.4);
   color: var(--accent);
+}
+
+.button.icon {
+  width: 32px;
+  padding: 0;
+  font-size: 18px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hidden {
+  display: none;
 }
 
 .input {
