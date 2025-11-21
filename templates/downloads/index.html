@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NjordIT Downloads</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  </head>
+  <body class="downloads-page">
+    <div class="app-shell">
+      <header class="hero hero-downloads">
+        <h1>Downloads & Requirements</h1>
+        <p class="hero-sub">
+          Grab the capture prerequisites (Npcap, Wireshark/tshark, tcpdump) before running the Packet Capture tool. Installers require administrator rights.
+        </p>
+        <a class="button ghost" href="{{ url_for('index') }}">← Back to dashboard</a>
+      </header>
+
+      <section class="section downloads-section">
+        {% for section in sections %}
+        <div class="download-section-card" id="{{ section.id }}">
+          <div class="download-section-header">
+            <h2>{{ section.title }}</h2>
+          </div>
+          <div class="downloads-grid">
+            {% for item in section.entries %}
+            <div class="card download-card">
+              <div class="download-card-header">
+                <h3>{{ item.name }}</h3>
+                <a class="button" href="{{ item.link }}" target="_blank" rel="noreferrer">Download</a>
+              </div>
+              <p>{{ item.description }}</p>
+              {% if item.steps %}
+              <ul>
+                {% for step in item.steps %}
+                <li>{{ step }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </section>
+    </div>
+  </body>
+</html>

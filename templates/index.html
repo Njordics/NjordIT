@@ -18,6 +18,7 @@
         </p>
         <div class="hero-actions">
           <div id="statusBadge" class="status-badge"></div>
+          <a class="button ghost" href="{{ url_for('downloads') }}">Downloads</a>
         </div>
         <div class="hero-metrics">
           <div class="metric-card">
@@ -135,6 +136,39 @@
                   <button id="serialClearBtn" class="button ghost" type="button">Clear</button>
                 </div>
                 <pre id="serialOutput" class="serial-output">Waiting to connect.</pre>
+              </div>
+            </div>
+
+            <div class="card pcap-card collapsed" id="pcapCard">
+              <div class="pcap-header">
+                <div>
+                  <h3>Packet Capture</h3>
+                  <p>Quick capture for troubleshooting. Uses tcpdump/tshark if available.</p>
+                </div>
+                <div class="pcap-actions">
+                  <button id="pcapRunBtn" class="button">Capture</button>
+                  <div class="pcap-toggles">
+                    <button id="closePcapBtn" class="button ghost icon" aria-label="Collapse Packet Capture card">x</button>
+                    <button id="openPcapBtn" class="button ghost icon" aria-label="Expand Packet Capture card">v</button>
+                  </div>
+                </div>
+              </div>
+              <div class="pcap-body">
+                <div class="pcap-grid">
+                  <label class="field">
+                    <span class="field-label">Interface (optional)</span>
+                    <input id="pcapInterfaceInput" class="input" type="text" placeholder="e.g. eth0 or leave blank" />
+                  </label>
+                  <label class="field">
+                    <span class="field-label">Duration (seconds)</span>
+                    <input id="pcapDurationInput" class="input" type="number" value="5" min="1" max="30" />
+                  </label>
+                  <label class="field">
+                    <span class="field-label">Packet limit</span>
+                    <input id="pcapCountInput" class="input" type="number" value="200" min="1" max="5000" />
+                  </label>
+                </div>
+                <div id="pcapResult" class="pcap-result muted">No capture yet.</div>
               </div>
             </div>
           </div>

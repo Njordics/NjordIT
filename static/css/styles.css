@@ -538,6 +538,27 @@ a {
   color: #b4ffb1;
 }
 
+.pcap-card .pcap-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.pcap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.pcap-result {
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  min-height: 44px;
+}
+
 .driver-card {
   display: flex;
   flex-direction: column;
@@ -565,6 +586,29 @@ a {
   border-bottom: 1px solid rgba(60, 255, 124, 0.1);
 }
 
+.audio-device-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.download-button {
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.download-button.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.audio-device-status {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
 .audio-device .muted {
   color: var(--muted);
   font-size: 14px;
@@ -578,6 +622,64 @@ a {
 
 .driver-list a {
   color: var(--accent);
+}
+
+.hero-downloads {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hero-downloads .button {
+  align-self: flex-start;
+}
+
+.downloads-section {
+  margin-top: 20px;
+}
+
+.download-section-card {
+  margin-bottom: 32px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(6, 10, 12, 0.7);
+  box-shadow: var(--shadow);
+}
+
+.download-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.download-section-header h2 {
+  margin: 0;
+}
+
+.downloads-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.download-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.download-card ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.download-card li {
+  margin-bottom: 6px;
 }
 
 .button.ghost {

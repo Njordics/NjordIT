@@ -2,3 +2,5 @@ Flask==3.0.2
 requests==2.31.0
 watchfiles==0.21.0
 pyserial==3.5
+sounddevice==0.4.6
+# Note: tcpdump and tshark are native tools, install via system package manager.

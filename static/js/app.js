@@ -47,6 +47,14 @@ const tabs = Array.from(document.querySelectorAll(".tab"));
 const tabPanels = Array.from(document.querySelectorAll(".tab-panel"));
 const audioCheckBtn = document.getElementById("audioCheckBtn");
 const audioResults = document.getElementById("audioResults");
+const pcapCard = document.getElementById("pcapCard");
+const pcapRunBtn = document.getElementById("pcapRunBtn");
+const closePcapBtn = document.getElementById("closePcapBtn");
+const openPcapBtn = document.getElementById("openPcapBtn");
+const pcapInterfaceInput = document.getElementById("pcapInterfaceInput");
+const pcapDurationInput = document.getElementById("pcapDurationInput");
+const pcapCountInput = document.getElementById("pcapCountInput");
+const pcapResult = document.getElementById("pcapResult");
 
 let suggestedRange = null;
 
@@ -385,6 +393,15 @@ function expandSerial() {
   }
 }
 
+function collapsePcap() {
+  if (pcapCard) pcapCard.classList.add("collapsed");
+  if (pcapResult) pcapResult.textContent = "Capture collapsed. Hit Capture to reopen.";
+}
+
+function expandPcap() {
+  if (pcapCard) pcapCard.classList.remove("collapsed");
+}
+
 async function refreshSerialPorts() {
   if (!serialPortSelect) return;
   try {
@@ -454,6 +471,40 @@ function clearSerialOutput() {
   if (serialOutput) serialOutput.textContent = "";
 }
 
+async function runPcapCapture() {
+  if (!pcapResult || !pcapRunBtn) return;
+  const iface = (pcapInterfaceInput?.value || "").trim();
+  const duration = parseInt(pcapDurationInput?.value || "5", 10) || 5;
+  const count = parseInt(pcapCountInput?.value || "200", 10) || 200;
+
+  pcapRunBtn.disabled = true;
+  pcapRunBtn.textContent = "Capturing...";
+  expandPcap();
+  pcapResult.textContent = "Running capture...";
+
+  try {
+    const resp = await fetch("/api/pcap", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ interface: iface, duration, count }),
+    });
+    const json = await resp.json();
+    if (!resp.ok || !json.ok) throw new Error(json.error || `pcap failed (${resp.status})`);
+    const bytes = json.bytes || 0;
+    const path = json.path || "(unknown)";
+    pcapResult.textContent = `Saved capture to ${path} (${bytes} bytes). Open in Wireshark or tcpdump.`;
+  } catch (err) {
+    const errMsg = err?.message || "capture failed";
+    const needsNpcap = /npcap|npf|wireshark|tshark/i.test(errMsg);
+    const extra =
+      " Visit the Downloads page to install the required capture tools (Npcap and Wireshark/tshark) before retrying.";
+    pcapResult.textContent = `Capture failed: ${errMsg}${needsNpcap ? extra : ""}`;
+  } finally {
+    pcapRunBtn.disabled = false;
+    pcapRunBtn.textContent = "Capture";
+  }
+}
+
 function activateTab(targetId) {
   tabs.forEach((tab) => {
     const isActive = tab.dataset.target === targetId;
@@ -468,7 +519,7 @@ async function checkAudioDrivers() {
   if (!audioResults) return;
   audioResults.textContent = "Checking audio drivers...";
   try {
-    const resp = await fetch("/api/drivers/audio");
+    const resp = await fetch("/api/drivers/audio/updates");
     const json = await resp.json();
     if (!json.ok) throw new Error(json.error || "audio check failed");
     audioResults.innerHTML = "";
@@ -477,7 +528,7 @@ async function checkAudioDrivers() {
       audioResults.textContent = "No audio devices found.";
       return;
     }
-    devices.forEach((dev) => {
+    devices.forEach((dev, idx) => {
       const block = document.createElement("div");
       block.className = "audio-device";
       const name = dev.name || "Unknown device";
@@ -485,11 +536,73 @@ async function checkAudioDrivers() {
       const version = dev.driver_version || "Unknown version";
       const status = dev.status || "unknown";
       const currency = dev.is_current === true ? "Current" : dev.is_current === false ? "Outdated" : "Unknown";
-      block.innerHTML = `<strong>${name}</strong><div class="muted">${manufacturer}</div><div>Driver: ${version}</div><div>Status: ${status}</div><div>Currency: ${currency}</div>`;
+      const isOutdated = dev.is_current === false || dev.update_available === true;
+      const latestUrl = dev.latest_download_url || dev.latest_source?.url || null;
+      const latestVersion = dev.latest_version || null;
+
+      const header = document.createElement("div");
+      header.className = "audio-device-header";
+
+      const title = document.createElement("div");
+      title.innerHTML = `<strong>${name}</strong><div class="muted">${manufacturer}</div>`;
+      header.appendChild(title);
+
+      let statusLine = null;
+
+      if (isOutdated) {
+        const action = document.createElement("button");
+        action.className = "button download-button";
+        action.textContent = "Download & Install";
+        action.disabled = !latestUrl;
+        action.title = latestUrl ? "Download and install latest driver" : "Download link not available";
+        statusLine = document.createElement("div");
+        statusLine.className = "audio-device-status";
+        statusLine.id = `audio-install-status-${idx}`;
+        if (!latestUrl) {
+          statusLine.textContent = "No download link available for this device.";
+        }
+        action.addEventListener("click", () => installLatestDriver({ vendor: dev.vendor, url: latestUrl, name, statusLine, button: action, latestVersion }));
+        header.appendChild(action);
+      }
+
+      const meta = document.createElement("div");
+      meta.innerHTML = `<div>Driver: ${version}${latestVersion ? ` (latest: ${latestVersion})` : ""}</div><div>Status: ${status}</div><div>Currency: ${currency}</div>`;
+
+      block.appendChild(header);
+      block.appendChild(meta);
+      if (statusLine) block.appendChild(statusLine);
       audioResults.appendChild(block);
     });
   } catch (err) {
     audioResults.textContent = `Audio check failed: ${err.message}`;
+  }
+}
+
+async function installLatestDriver({ vendor, url, name, statusLine, button, latestVersion }) {
+  if (!url) return;
+  if (button) {
+    button.disabled = true;
+    button.textContent = "Installing...";
+  }
+  if (statusLine) statusLine.textContent = `Downloading latest driver${latestVersion ? ` (${latestVersion})` : ""} for ${name}...`;
+  try {
+    const resp = await fetch("/api/drivers/audio/install", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ vendor, url }),
+    });
+    const json = await resp.json();
+    if (!resp.ok || !json.ok) {
+      throw new Error(json.error || json.message || `install failed (${resp.status})`);
+    }
+    if (statusLine) statusLine.textContent = json.message || "Driver installed.";
+  } catch (err) {
+    if (statusLine) statusLine.textContent = `Install failed: ${err.message}`;
+  } finally {
+    if (button) {
+      button.disabled = false;
+      button.textContent = "Download & Install";
+    }
   }
 }
 
@@ -509,6 +622,9 @@ if (serialSendBtn) serialSendBtn.addEventListener("click", sendSerialCommand);
 if (serialClearBtn) serialClearBtn.addEventListener("click", clearSerialOutput);
 if (serialRefreshBtn) serialRefreshBtn.addEventListener("click", refreshSerialPorts);
 if (audioCheckBtn) audioCheckBtn.addEventListener("click", checkAudioDrivers);
+if (pcapRunBtn) pcapRunBtn.addEventListener("click", runPcapCapture);
+if (closePcapBtn) closePcapBtn.addEventListener("click", collapsePcap);
+if (openPcapBtn) openPcapBtn.addEventListener("click", expandPcap);
 tabs.forEach((tab) => {
   tab.addEventListener("click", () => {
     const target = tab.dataset.target;
