@@ -79,9 +79,10 @@ a {
 }
 
 .app-shell {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 32px 20px 80px;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 28px 28px 80px;
 }
 
 .pill {
@@ -165,10 +166,49 @@ a {
 .metric-value {
   font-size: 18px;
   font-weight: 700;
+  white-space: pre-line;
 }
 
 .section {
   margin-top: 28px;
+}
+
+.tab-row {
+  display: flex;
+  gap: 10px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+}
+
+.tab {
+  background: rgba(60, 255, 124, 0.12);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 14px;
+  border-radius: 10px 10px 0 0;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: inset 0 0 0 1px rgba(60, 255, 124, 0.08);
+}
+
+.tab.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px rgba(60, 255, 124, 0.25);
+}
+
+.tab-panel {
+  margin-top: 12px;
+}
+
+.tab-panel:not(.active) {
+  display: none;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  align-items: stretch;
 }
 
 .section-header h2 {
@@ -209,6 +249,140 @@ a {
   color: var(--muted);
 }
 
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.ip-scan-section {
+  margin-top: 28px;
+}
+
+.ip-scan-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ip-scan-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ip-scan-card.collapsed .ip-scan-body {
+  display: none;
+}
+
+.ip-scan-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.ip-scan-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.ip-scan-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.ip-scan-toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ip-scan-meta {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.ip-scan-results {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(6, 10, 12, 0.7);
+  overflow: hidden;
+}
+
+.ip-scan-empty {
+  padding: 16px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.ip-scan-row {
+  display: grid;
+  grid-template-columns: 180px 1fr 120px 140px;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border-top: 1px solid rgba(60, 255, 124, 0.06);
+}
+
+.ip-scan-row.header {
+  background: rgba(60, 255, 124, 0.06);
+  color: var(--muted);
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  border-top: none;
+}
+
+.ip-scan-row .ip {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.ip-scan-row .hostname {
+  color: var(--muted);
+}
+
+.pill.status {
+  background: rgba(60, 255, 124, 0.14);
+  border: 1px solid rgba(60, 255, 124, 0.4);
+  padding: 6px 10px;
+  border-radius: 999px;
+}
+
+.pill.status.offline {
+  background: rgba(255, 107, 107, 0.12);
+  border-color: rgba(255, 107, 107, 0.4);
+  color: #ffb3b3;
+}
+
+.port-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  background: rgba(60, 255, 124, 0.12);
+  border: 1px solid rgba(60, 255, 124, 0.3);
+  border-radius: 6px;
+  font-size: 12px;
+  margin-right: 4px;
+}
+
+.ip-scan-ports {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+
 .ip-config-section {
   margin-top: 28px;
 }
@@ -237,6 +411,12 @@ a {
 .ip-config-actions {
   display: flex;
   gap: 8px;
+}
+
+.ip-config-toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .ip-config-primary-actions {
@@ -269,6 +449,14 @@ a {
   max-height: 520px;
 }
 
+.ip-config-card.collapsed .ip-config-body {
+  display: none;
+}
+
+.ip-config-card.collapsed .ip-config-hint {
+  display: none;
+}
+
 .ip-config-output {
   margin: 0;
   background: rgba(3, 6, 12, 0.7);
@@ -282,6 +470,114 @@ a {
   overflow-y: auto;
   white-space: pre-wrap;
   color: #b4ffb1;
+}
+
+.serial-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.serial-card.collapsed .serial-body {
+  display: none;
+}
+
+.serial-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.serial-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.serial-toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.serial-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  align-items: end;
+}
+
+.serial-actions-inline {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.serial-command {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.serial-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.serial-output {
+  background: rgba(3, 6, 12, 0.8);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  min-height: 140px;
+  max-height: 320px;
+  overflow-y: auto;
+  font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 14px;
+  white-space: pre-wrap;
+  color: #b4ffb1;
+}
+
+.driver-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.driver-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.driver-results {
+  background: rgba(6, 10, 12, 0.7);
+  border: 1px solid var(--border);
+  padding: 12px;
+  border-radius: 10px;
+  min-height: 80px;
+  white-space: pre-wrap;
+}
+
+.audio-device {
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(60, 255, 124, 0.1);
+}
+
+.audio-device .muted {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.driver-card ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--text);
+}
+
+.driver-list a {
+  color: var(--accent);
 }
 
 .button.ghost {
@@ -385,4 +681,15 @@ a {
   .hero {
     padding: 18px 14px;
   }
+
+  .ip-scan-row {
+    grid-template-columns: 1fr;
+    align-items: flex-start;
+  }
+
+  .ip-scan-header {
+    flex-direction: column;
+  }
 }
+ 
+ 

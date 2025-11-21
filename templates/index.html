@@ -22,38 +22,133 @@
         <div class="hero-metrics">
           <div class="metric-card">
             <div class="metric-label">IP Address</div>
-            <div class="metric-value" id="httpResHero">—</div>
+            <div class="metric-value" id="httpResHero">--</div>
           </div>
           <div class="metric-card">
             <div class="metric-label">Local IP</div>
-            <div class="metric-value" id="localIpHero">—</div>
+            <div class="metric-value" id="localIpHero">--</div>
           </div>
           <div class="metric-card">
             <div class="metric-label">DNS</div>
-            <div class="metric-value" id="dnsResHero">—</div>
+            <div class="metric-value" id="dnsResHero">--</div>
           </div>
           <div class="metric-card">
             <div class="metric-label">Latency</div>
-            <div class="metric-value" id="latencyResHero">—</div>
+            <div class="metric-value" id="latencyResHero">--</div>
           </div>
         </div>
       </header>
 
-      <section class="section ip-config-section">
-        <div class="card ip-config-card" id="ipConfigCard">
-          <div class="ip-config-header">
-            <h3>IP Config</h3>
-            <div class="ip-config-actions">
-              <div class="ip-config-primary-actions">
-                <button id="runIpConfigBtn" class="button ghost">Run</button>
-                <button id="rerunIpConfigBtn" class="button ghost hidden">Rerun</button>
+      <section class="section">
+        <div class="tab-row">
+          <button type="button" class="tab active" data-target="networkTab">Network</button>
+          <button type="button" class="tab" data-target="driversTab">Drivers</button>
+        </div>
+        <div class="tab-panel active" id="networkTab">
+          <div class="tools-grid">
+            <div class="card ip-config-card collapsed" id="ipConfigCard">
+              <div class="ip-config-header">
+                <h3>IP Config</h3>
+                <div class="ip-config-actions">
+                  <div class="ip-config-primary-actions">
+                    <button id="runIpConfigBtn" class="button ghost">Run</button>
+                    <button id="rerunIpConfigBtn" class="button ghost hidden">Rerun</button>
+                  </div>
+                  <div class="ip-config-toggles">
+                    <button id="closeIpConfigBtn" class="button ghost icon" aria-label="Collapse IP Config card">x</button>
+                    <button id="openIpConfigBtn" class="button ghost icon" aria-label="Expand IP Config card">v</button>
+                  </div>
+                </div>
               </div>
-              <button id="closeIpConfigBtn" class="button ghost icon" aria-label="Collapse IP Config card">×</button>
+              <p class="ip-config-hint" id="ipConfigHint">Click Run to expand and capture the current IP configuration.</p>
+              <div class="ip-config-body" id="ipConfigBody">
+                <pre id="ipConfigOutput" class="ip-config-output" aria-live="polite">Press Run to show interface details.</pre>
+              </div>
+            </div>
+
+            <div class="card ip-scan-card collapsed" id="ipScanCard">
+              <div class="ip-scan-header">
+                <div>
+                  <h3>IP Scanner</h3>
+                  <p>Quick network sweep similar to Advanced IP Scanner. Provide a CIDR or range to find responsive hosts and common ports.</p>
+                </div>
+                <div class="ip-scan-actions">
+                  <button id="ipScanBtn" class="button">Scan</button>
+                  <button id="ipScanUseLocalBtn" class="button ghost" type="button">Use my /24</button>
+                  <div class="ip-scan-toggles">
+                    <button id="closeIpScanBtn" class="button ghost icon" aria-label="Collapse IP Scanner card">x</button>
+                    <button id="openIpScanBtn" class="button ghost icon" aria-label="Expand IP Scanner card">v</button>
+                  </div>
+                </div>
+              </div>
+              <div class="ip-scan-body">
+                <div class="ip-scan-grid">
+                  <label class="field">
+                    <span class="field-label">Range / CIDR</span>
+                    <input id="ipScanRangeInput" class="input" type="text" placeholder="192.168.1.0/24 or 192.168.1.10-192.168.1.200" />
+                  </label>
+                  <label class="field">
+                    <span class="field-label">Ports (optional)</span>
+                    <input id="ipScanPortsInput" class="input" type="text" value="80,443,3389,22" />
+                  </label>
+                </div>
+                <div class="ip-scan-meta" id="ipScanSummary">Enter a range and hit Scan.</div>
+                <div class="ip-scan-results" id="ipScanResults">
+                  <div class="ip-scan-empty" id="ipScanEmpty">Waiting to scan...</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card serial-card collapsed" id="serialCard">
+              <div class="serial-header">
+                <div>
+                  <h3>Serial Console</h3>
+                  <p>Putty-like quick console for USB/COM cables. Select a port and baud, send single commands, and view responses.</p>
+                </div>
+                <div class="serial-actions">
+                  <div class="serial-toggles">
+                    <button id="closeSerialBtn" class="button ghost icon" aria-label="Collapse Serial Console card">x</button>
+                    <button id="openSerialBtn" class="button ghost icon" aria-label="Expand Serial Console card">v</button>
+                  </div>
+                </div>
+              </div>
+              <div class="serial-body">
+                <div class="serial-grid">
+                  <label class="field">
+                    <span class="field-label">Port</span>
+                    <select id="serialPortSelect" class="input"></select>
+                  </label>
+                  <label class="field">
+                    <span class="field-label">Baud</span>
+                    <input id="serialBaudInput" class="input" type="number" value="9600" min="1" />
+                  </label>
+                  <div class="serial-actions-inline">
+                    <button id="serialRefreshBtn" class="button ghost" type="button">Refresh ports</button>
+                  </div>
+                </div>
+                <label class="field">
+                  <span class="field-label">Command</span>
+                  <textarea id="serialCommandInput" class="input serial-command" rows="3" placeholder="Type command then Send"></textarea>
+                </label>
+                <div class="serial-buttons">
+                  <button id="serialSendBtn" class="button">Send</button>
+                  <button id="serialClearBtn" class="button ghost" type="button">Clear</button>
+                </div>
+                <pre id="serialOutput" class="serial-output">Waiting to connect.</pre>
+              </div>
             </div>
           </div>
-          <p class="ip-config-hint" id="ipConfigHint">Click Run to expand and capture the current IP configuration.</p>
-          <div class="ip-config-body" id="ipConfigBody">
-            <pre id="ipConfigOutput" class="ip-config-output" aria-live="polite">Press Run to show interface details.</pre>
+        </div>
+        <div class="tab-panel" id="driversTab">
+          <div class="tools-grid">
+            <div class="card driver-card">
+              <h3>Audio Drivers</h3>
+              <p>Check detected audio devices and driver versions.</p>
+              <div class="driver-actions">
+                <button id="audioCheckBtn" class="button">Check audio drivers</button>
+              </div>
+              <div id="audioResults" class="driver-results">No checks run yet.</div>
+            </div>
           </div>
         </div>
       </section>
