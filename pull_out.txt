@@ -1,8 +1,0 @@
-﻿git : error: cannot pull with rebase: You have unstaged changes.
-At line:1 char:1
-+ git pull --rebase origin main 2>&1 | Out-File pull_out.txt -Encoding  ...
-+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    + CategoryInfo          : NotSpecified: (error: cannot p...staged changes.:String) [], RemoteException
-    + FullyQualifiedErrorId : NativeCommandError
- 
-error: Please commit or stash them.
