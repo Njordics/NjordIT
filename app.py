@@ -1448,12 +1448,12 @@ DOWNLOAD_SECTIONS = [
                 "steps": [
                     "Download the installer to your Downloads folder.",
                     "Run it as administrator with WinPcap compatibility enabled.",
-                    "Reopen NjordIT after the service starts.",
+                    "Reopen FriggIT after the service starts.",
                 ],
             },
             {
                 "name": "Wireshark / tshark",
-                "description": "Installs tshark on Windows, which NjordIT uses when tcpdump is unavailable.",
+                "description": "Installs tshark on Windows, which FriggIT uses when tcpdump is unavailable.",
                 "link": "https://www.wireshark.org/download.html",
                 "steps": [
                     "Download Wireshark for Windows.",

@@ -1,0 +1,23 @@
+﻿On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   README.md
+	modified:   app.py
+	modified:   static/manifest.webmanifest
+	modified:   static/sw.js
+	modified:   templates/downloads/index.html
+	modified:   templates/index.html
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	add_out.txt
+	commit_out.txt
+	modified.txt
+	push_out.txt
+	remote.txt
+	status.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")

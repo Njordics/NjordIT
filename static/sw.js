@@ -1,4 +1,4 @@
-const CACHE_NAME = "njordit-flask-shell-v1";
+const CACHE_NAME = "friggit-flask-shell-v1";
 const SHELL = ["/", "/static/css/styles.css", "/static/js/app.js", "/static/icon.svg", "/static/manifest.webmanifest"];
 
 self.addEventListener("install", (event) => {
