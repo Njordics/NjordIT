@@ -1,4 +1,4 @@
-# NjordIT Tools (Flask PWA)
+# FriggIT Tools (Flask PWA)
 
 Flask-backed web app with a browser UI for quick network triage. Includes HTTP/DNS/latency checks, IP config capture, IP scanning, a serial console (Putty-like, single-command), and an audio driver checker. Built as a simple PWA (installable, caches shell offline) for laptops, Chromebooks, or phones.
 
