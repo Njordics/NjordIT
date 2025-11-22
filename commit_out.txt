@@ -1,23 +1,19 @@
 ﻿On branch main
-Your branch is up to date with 'origin/main'.
+Your branch is ahead of 'origin/main' by 1 commit.
+  (use "git push" to publish your local commits)
 
 Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
+  (use "git add/rm <file>..." to update what will be committed)
   (use "git restore <file>..." to discard changes in working directory)
-	modified:   README.md
-	modified:   app.py
-	modified:   static/manifest.webmanifest
-	modified:   static/sw.js
-	modified:   templates/downloads/index.html
-	modified:   templates/index.html
+	deleted:    add_out.txt
+	modified:   commit_out.txt
+	deleted:    modified.txt
+	deleted:    remote.txt
+	deleted:    status.txt
 
 Untracked files:
   (use "git add <file>..." to include in what will be committed)
-	add_out.txt
-	commit_out.txt
-	modified.txt
-	push_out.txt
-	remote.txt
-	status.txt
+	pull_out.txt
+	status3.txt
 
 no changes added to commit (use "git add" and/or "git commit -a")
